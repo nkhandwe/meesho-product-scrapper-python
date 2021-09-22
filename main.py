@@ -52,9 +52,13 @@ url = '/aagam-voguish-sarees/p/v0pji'
 product = Product(url)
 req = product.get_request()
 html_extract = Htmlextract(req)
+# json extracted
+# print(req)
+# print(html_extract.get_json())
 
-print(req)
-print(html_extract.get_json())
+# details of one product
+details = html_extract.get_data_of_single_product()
+html_extract.get_image_url(details['images'])
 
 # links = html_extract.get_on_page_product_links()
 

@@ -3,6 +3,7 @@ from utils import headers ,field_names
 from bs4 import BeautifulSoup
 from csv import DictReader , DictWriter
 from collections import OrderedDict
+import json
 
 class Product(object):
 
@@ -19,10 +20,11 @@ class Product(object):
 
 class Htmlextract(object):
 
-    def __init__(self,page,*args,**kwargs):
+    def __init__(self,page=None,*args,**kwargs):
         self.content = page.content
         self.soup = BeautifulSoup(self.content, 'html.parser')
         self.json_file = 'files/main.json'
+        self.images_save = 'images/'
 
 
     def get_on_page_product_links(self):
@@ -32,12 +34,38 @@ class Htmlextract(object):
         return links_array
     
     def get_json(self):
-        with open(self.json_file,'w') as f:
-            f.write(self.soup.find('script',{"id":"__NEXT_DATA__","type":"application/json"}).text)
+        # with open(self.json_file,'w') as f:
+        #     f.write(self.soup.find('script',{"id":"__NEXT_DATA__","type":"application/json"}).text)
         return self.soup.find('script',{"id":"__NEXT_DATA__","type":"application/json"}).text
     
-    
+    def get_data_of_single_product(self):
+        with open(self.json_file,'r') as f:
+            data = json.load(f)
+            data=data['props']['pageProps']['initialState']['product']
+            similar =data['similar']['products']
+            details =data['details']['data']
+            return{
+                'name':details['name'],
+                'description':details['description'],
+                'price':details['mrp_details']['mrp'],
+                'images':details['images'],
+                'sizes':details['variations'],
+                'has_similar':len(similar),
+                'similar':[i['product_id'] for i in similar],
+                'scrapped':True
+            }
 
+        return False
+    
+    def get_image_url(self,*args,**kwargs):
+        from datetime import datetime
+        import urllib.request
+        image_urls=[]
+        for i in args[0]:
+            image_name =str(datetime.timestamp(datetime.now()))+i.split('/')[-1]
+            image_urls.append(image_name)
+            urllib.request.urlretrieve(i, str(self.images_save+image_name))
+        return image_urls
 
 
 
