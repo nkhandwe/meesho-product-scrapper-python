@@ -22,10 +22,14 @@ class Htmlextract(object):
         self.soup = BeautifulSoup(self.content, 'html.parser')
 
     def get_on_page_product_links(self):
-        links = self.soup.find_all('a', style="text-decoration:none")
-        links_array = []
-        for i in links:
-            links_array.append(i['href'])
+        # product cards
+
+        links = self.soup.find_all('div', {"class":"sc-dlfnuX ProductList__GridCol-sc-8lnc8o-0 bAyXPl ldNFyP"})
+
+        # with open('index.html','w') as f:
+        #     f.write(str(self.soup))
+        
+        links_array = [pr.find('a')['href'] for pr in links]
 
         return links_array
     
