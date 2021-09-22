@@ -2,6 +2,7 @@ import requests
 from utils import headers ,field_names
 from bs4 import BeautifulSoup
 from csv import DictReader , DictWriter
+from collections import OrderedDict
 
 class Product(object):
 
@@ -32,6 +33,9 @@ class Htmlextract(object):
         
         return links_array
     
+    # def get_json(self):
+
+    
 
 
 class CsvOperations(object):
@@ -47,6 +51,11 @@ class CsvOperations(object):
         with open(self.file_name,'r') as f:
                 read = DictReader(f,delimiter=',')
                 return [re for re in read]
+    
+    def get_not_scrapped(self,*args,**kwargs):
+        with open(self.file_name,'r') as f:
+                read = DictReader(f,delimiter=',')
+                return [re for re in read if re['scrapped']=='False']
 
     def write_file(self,*args,**kwargs):
         try:
@@ -73,7 +82,40 @@ class CsvOperations(object):
         except Exception as e:
             return e
     
-    # def update_file_by_id(self,*args,**kwargs):
+    def update_file_by_id(self,*args,**kwargs):
+        # print(dict(args[1]))
+        if len(self.read_file())==0:
+            raise "No data for updation"
+        with open(self.file_name,'r') as f:
+            read = DictReader(f,delimiter=',')
+            ls=[re for re in read]
+
+            with open(self.file_name,'w') as f:
+                update = DictWriter(f,delimiter=',',fieldnames=self.field_names)
+                if self.headers:
+                    update.writeheader()
+                for i in ls:
+                    if args[0] == i['product_id']:
+                        dc = args[1].copy()
+
+                        for key in dc:
+                            i[key] = dc[key]
+                        update.writerow(i)
+
+                    else:
+                        update.writerow(i)
+            return True
+
+
+    # search performed by id
+    def check_availablity_of_data(self,*args,**kwargs):
+        for i in self.read_file():
+            if args[0] == i['product_id']:
+                return True
+        return False
+
+
+
 
 
     
