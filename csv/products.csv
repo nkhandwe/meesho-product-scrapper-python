@@ -1,0 +1,3 @@
+images,sub_category,sizes,scrapped,similar,category,description,price,link,has_similar,colours,product_id,child_category,name
+,Shirt,"M,L,S",False,,Men,shiet ,21,lllll,False,,j98kj2,Fabrics,lol
+,,"M,L,S",False,,Fabrics,shiet ,21,Shirt,j98kj2,False,lllll,lol,Men
