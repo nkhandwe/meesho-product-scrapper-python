@@ -7,33 +7,29 @@
 from productclass import Product, Htmlextract ,CsvOperations
 from utils import field_names
 
-cat_url ="https://meesho.com/satin-sarees/pl/5mlbu"
+url ="/satin-sarees/pl/5mlbu"
+category = "Men"
+subcategory="Shirt"
+childcategory = "Cotton"
+csv_file_name = "csv/products.csv"
 
-# product = Product("/satin-sarees/pl/5mlbu",1)
+# hitting request
+# product = Product(url,1)
 # req = product.get_request()
 # html_extract = Htmlextract(req)
 
-# print(req) 
+# links = html_extract.get_on_page_product_links()
 
-# print(html_extract.get_on_page_product_links())
+csv = CsvOperations(file_name=csv_file_name,headers=field_names,field_names=field_names)
 
+# csv.write_file()
+# adding links to csv files
+# for i in links:
+#     csv.append_file({
+#     'link':i,
+#     'product_id':i.split('/')[-1],
+#     'scrapped':False
+#     })
 
-csv = CsvOperations(file_name="csv/products.csv",headers=field_names,field_names=field_names)
-
-
-print(csv.append_file({
-    'name':'lol',
-    'price':21,
-    'link':'lllll',
-    'product_id':'j98kj2',
-    'category':'Men',
-    'sub_category':'Shirt',
-    'child_category':'Fabrics',
-    'description':"shiet ",
-    'sizes':'M,L,S',
-    'has_similar':False,
-    'scrapped':False
-}))
-
-
-
+for i in csv.read_file():
+    print(i['product_id'])

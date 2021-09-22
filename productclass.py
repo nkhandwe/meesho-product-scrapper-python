@@ -27,10 +27,9 @@ class Htmlextract(object):
         # product cards
         links = self.soup.find_all('div', {"class":"sc-dlfnuX ProductList__GridCol-sc-8lnc8o-0 bAyXPl ldNFyP"})
 
-        # with open('index.html','w') as f:
-        #     f.write(str(self.soup))
-
         links_array = [pr.find('a')['href'] for pr in links]
+
+        
         return links_array
     
 
@@ -44,11 +43,14 @@ class CsvOperations(object):
         print(args)
         self.field_names = field_names
 
+    def read_file(self,*args,**kwargs):
+        with open(self.file_name,'r') as f:
+                read = DictReader(f,delimiter=',')
+                return [re for re in read]
 
     def write_file(self,*args,**kwargs):
         try:
             with open(self.file_name,'w') as f:
-                print(args)
                 f = DictWriter(f,delimiter=',',fieldnames=self.field_names)
                 if self.headers:
                     f.writeheader()
@@ -60,7 +62,6 @@ class CsvOperations(object):
             return e
 
     def append_file(self,*args,**kwargs):
-        # print(self)
         try:
             with open(self.file_name,'a') as f:
                 f = DictWriter(f,delimiter=',',fieldnames=self.field_names)
@@ -71,6 +72,11 @@ class CsvOperations(object):
 
         except Exception as e:
             return e
+    
+    # def update_file_by_id(self,*args,**kwargs):
+
+
+    
 
 
 
