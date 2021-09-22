@@ -11,7 +11,7 @@ url ="/satin-sarees/pl/5mlbu"
 category = "Men"
 sub_category="Top Wear"
 child_category = "Tshirts"
-csv_file_name = "csv/products.csv"
+csv_file_name = "files/products.csv"
 
 # hitting request
 # product = Product(url,1)
@@ -54,6 +54,7 @@ req = product.get_request()
 html_extract = Htmlextract(req)
 
 print(req)
+print(html_extract.get_json())
 
 # links = html_extract.get_on_page_product_links()
 

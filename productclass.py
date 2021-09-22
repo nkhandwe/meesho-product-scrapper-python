@@ -22,18 +22,24 @@ class Htmlextract(object):
     def __init__(self,page,*args,**kwargs):
         self.content = page.content
         self.soup = BeautifulSoup(self.content, 'html.parser')
+        self.json_file = 'files/main.json'
+
 
     def get_on_page_product_links(self):
-
         # product cards
         links = self.soup.find_all('div', {"class":"sc-dlfnuX ProductList__GridCol-sc-8lnc8o-0 bAyXPl ldNFyP"})
-
         links_array = [pr.find('a')['href'] for pr in links]
-
-        
         return links_array
     
-    # def get_json(self):
+    def get_json(self):
+        with open(self.json_file,'w') as f:
+            f.write(self.soup.find('script',{"id":"__NEXT_DATA__","type":"application/json"}).text)
+        return self.soup.find('script',{"id":"__NEXT_DATA__","type":"application/json"}).text
+    
+    
+
+
+
 
     
 
@@ -74,7 +80,6 @@ class CsvOperations(object):
         try:
             with open(self.file_name,'a') as f:
                 f = DictWriter(f,delimiter=',',fieldnames=self.field_names)
-
                 for i in args:
                     f.writerow(i)
             return True
