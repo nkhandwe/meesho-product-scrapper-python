@@ -143,8 +143,9 @@ class CsvOperations(object):
 
 class SqlOperations(object):
 
-    def __init__(self,cursor,table,*args,**kwargs):
+    def __init__(self,cursor,table,connection,*args,**kwargs):
         self.cursor = cursor
+        self.connection = connection
         self.table = table
 
     def create_table(self,*args,**kwargs):
@@ -173,6 +174,12 @@ class SqlOperations(object):
         except Exception as e:
             print(e)
             return False
+    
+    def get_data(self,*args,**kwargs):
+        sqlite_select_query = f"""SELECT * from {self.table}"""
+        self.cursor.execute(sqlite_select_query)
+        records = self.cursor.fetchall()
+        return records
 
     def insert_data(self,*args, **kwargs):
         if not self.table:
@@ -184,12 +191,14 @@ class SqlOperations(object):
             values = values + (args[0][i],)
 
         sqlite_insert_query = f"""INSERT INTO {self.table}
-                          {columns} 
+                          {columns } 
                            VALUES 
                           {values}"""
-        print(sqlite_insert_query)
-        print(self.cursor.execute(sqlite_insert_query))
-        return True
+        self.cursor.execute(sqlite_insert_query)
+        self.connection.commit()
+        return  True
+    
+
 
 
 

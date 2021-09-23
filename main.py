@@ -28,11 +28,11 @@ except sqlite3.Error as error:
     print("Error while connecting to sqlite", error)
 
 if cursor:
-  sql = SqlOperations(cursor,table=table_name)
+  sql = SqlOperations(cursor,connection=sqliteConnection,table=table_name)
 
 
 
-print(sql.create_table('products'))
+# print(sql.create_table('products'))
 print(sql.insert_data({
               'name':'name',
                 'description':'description',
@@ -40,9 +40,10 @@ print(sql.insert_data({
                 'images':'images',
                 'sizes':'variations',
                 'has_similar':'similar',
-                'scrapped':'True'
+                'scrapped':True
             }))
 
+print(sql.get_data())
 
 # csv = CsvOperations(file_name=csv_file_name,headers=field_names,field_names=field_names)
 
