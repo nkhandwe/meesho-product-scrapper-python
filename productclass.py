@@ -176,28 +176,59 @@ class SqlOperations(object):
             return False
     
     def get_data(self,*args,**kwargs):
-        sqlite_select_query = f"""SELECT * from {self.table}"""
-        self.cursor.execute(sqlite_select_query)
-        records = self.cursor.fetchall()
-        return records
-
+        try:
+            sqlite_select_query = f"""SELECT * from {self.table}"""
+            self.cursor.execute(sqlite_select_query)
+            records = self.cursor.fetchall()
+            return records
+        except Exception as e:
+            print(e)
+            return False
+            
     def insert_data(self,*args, **kwargs):
         if not self.table:
             return "No table given"
-        columns = ()
-        values =()
-        for i in args[0]:
-            columns = columns + (i,)
-            values = values + (args[0][i],)
+        try:
+            columns = ()
+            values =()
+            for i in args[0]:
+                columns = columns + (i,)
+                values = values + (args[0][i],)
 
-        sqlite_insert_query = f"""INSERT INTO {self.table}
-                          {columns } 
-                           VALUES 
-                          {values}"""
-        self.cursor.execute(sqlite_insert_query)
-        self.connection.commit()
-        return  True
+            sqlite_insert_query = f"""INSERT INTO {self.table}
+                            {columns } 
+                            VALUES 
+                            {values}"""
+            self.cursor.execute(sqlite_insert_query)
+            self.connection.commit()
+            return  True
+        except Exception as e:
+            print(e)
+            return False
     
+    def get_data_by_id(self,*args,**kwargs):
+        try:
+            sqlite_select_query = f"""SELECT * FROM {self.table} where id = {args[0]}"""
+            self.cursor.execute(sqlite_select_query)
+            return  self.cursor.fetchall()
+        except Exception as e:
+            print(e)
+            return False
+
+    
+    def update_data_by_id(self,*args,**kwargs):
+        try:
+            updates = ""
+            for i in args[1]:
+                updates+= f" {i} = '{args[1][i]}' ,"
+
+            sql_update_query = f"""Update {self.table} set {updates[:-1]} where id = {args[0]}"""
+            self.cursor.execute(sql_update_query)
+            self.sqliteConnection.commit()
+            return True
+        except Exception as e:
+            print(e)
+            return False
 
 
 

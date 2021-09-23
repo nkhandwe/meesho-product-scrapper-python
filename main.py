@@ -33,17 +33,19 @@ if cursor:
 
 
 # print(sql.create_table('products'))
-print(sql.insert_data({
-              'name':'name',
-                'description':'description',
-                'price':'mrp',
-                'images':'images',
-                'sizes':'variations',
-                'has_similar':'similar',
-                'scrapped':True
-            }))
+# print(sql.insert_data({
+#               'name':'name',
+#                 'description':'description',
+#                 'price':'mrp',
+#                 'images':'images',
+#                 'sizes':'variations',
+#                 'has_similar':'similar',
+#                 'scrapped':True
+#             }))
 
-print(sql.get_data())
+# print(sql.get_data())
+# print(sql.get_data_by_id('1'))
+# print(sql.get_data_by_id('1',{'name':'cols','description':'desc'}))
 
 # csv = CsvOperations(file_name=csv_file_name,headers=field_names,field_names=field_names)
 
