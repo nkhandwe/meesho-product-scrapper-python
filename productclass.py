@@ -7,15 +7,14 @@ import json
 
 class Product(object):
 
-    def __init__(self,url,page=None,*args,**kwargs):
+    def __init__(self,url,*args,**kwargs):
         self.base = "https://meesho.com"
-        self.page = page
-        if page: self.url= f'{self.base+url}?page={page}'
         self.url = self.base+url
     
-    def get_request(self):
-        if self.page:
-            return  requests.get(self.url,headers=headers)
+    def get_request(self,*args,**kwargs):
+        print(self.url)
+        if args:
+            return  requests.get(f"{self.url}?page={args[0]}",headers=headers)
         return  requests.get(self.url,headers=headers)
 
 class Htmlextract(object):
@@ -24,7 +23,8 @@ class Htmlextract(object):
         self.content = page.content
         self.soup = BeautifulSoup(self.content, 'html.parser')
         self.json_file = 'files/main.json'
-        self.images_save = 'images/'
+        self.images_save = 'files/products/'
+        self.pathname = 'products/'
 
 
     def get_on_page_product_links(self):
@@ -49,9 +49,9 @@ class Htmlextract(object):
                 'description':details['description'],
                 'price':details['mrp_details']['mrp'],
                 'images':details['images'],
-                'sizes':details['variations'],
+                'sizes':json.dumps(details['variations']),
                 'has_similar':len(similar),
-                'similar':[i['product_id'] for i in similar],
+                'similar':json.dumps([i['product_id'] for i in similar]),
                 'scrapped':True
             }
 
@@ -63,9 +63,9 @@ class Htmlextract(object):
         image_urls=[]
         for i in args[0]:
             image_name =str(datetime.timestamp(datetime.now()))+i.split('/')[-1]
-            image_urls.append(image_name)
+            image_urls.append(self.pathname+image_name)
             urllib.request.urlretrieve(i, str(self.images_save+image_name))
-        return image_urls
+        return json.dumps(image_urls)
 
 class CsvOperations(object):
 
@@ -149,10 +149,10 @@ class SqlOperations(object):
         self.table = table
 
     def create_table(self,*args,**kwargs):
-        sqlite_create_table_query = f'''CREATE TABLE { args[0]  } (
+        sqlite_create_table_query = f'''CREATE TABLE { self.table  } (
                                 id INTEGER  PRIMARY KEY AUTOINCREMENT,
                                 product_id TEXT UNIQUE,
-                                name TEXT NOT NULL,
+                                name TEXT ,
                                 price INTEGER ,
                                 link TEXT ,
                                 images TEXT ,
@@ -186,6 +186,7 @@ class SqlOperations(object):
             return False
 
     def insert_data(self,*args, **kwargs):
+        # needed data as dictionary to insert eg:  {'name':'you name'}
         if not self.table:
             return "No table given"
         try:
@@ -207,6 +208,7 @@ class SqlOperations(object):
             return False
     
     def get_data_by_id(self,*args,**kwargs):
+        # only pass id as argument
         try:
             sqlite_select_query = f"""SELECT * FROM {self.table} where id = {args[0]}"""
             self.cursor.execute(sqlite_select_query)
@@ -216,6 +218,8 @@ class SqlOperations(object):
             return False
 
     def update_data_by_id(self,*args,**kwargs):
+        #  pass id and dictionary as argument for data updation eg: (1,{'name':'your name'})
+
         try:
             updates = ""
             for i in args[1]:
@@ -231,26 +235,11 @@ class SqlOperations(object):
 
     def get_unscrapped_data(self,*args,**kwargs):
         try:
-            sqlite_select_query = f"""SELECT * from {self.table} where scrapped = 0 """
+            sqlite_select_query = f"""SELECT id , link from {self.table} where scrapped = 0 """
             self.cursor.execute(sqlite_select_query)
             records = self.cursor.fetchall()
             return records
         except Exception as e:
             print(e)
             return False
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-    
 
