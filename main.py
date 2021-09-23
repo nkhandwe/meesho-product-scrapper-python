@@ -45,7 +45,9 @@ if cursor:
 
 # print(sql.get_data())
 # print(sql.get_data_by_id('1'))
-# print(sql.get_data_by_id('1',{'name':'cols','description':'desc'}))
+# print(sql.update_data_by_id(2,{'product_id':'87sdf4','description':'desc'}))
+
+print(sql.get_unscrapped_data())
 
 # csv = CsvOperations(file_name=csv_file_name,headers=field_names,field_names=field_names)
 

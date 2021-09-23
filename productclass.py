@@ -184,7 +184,7 @@ class SqlOperations(object):
         except Exception as e:
             print(e)
             return False
-            
+
     def insert_data(self,*args, **kwargs):
         if not self.table:
             return "No table given"
@@ -215,7 +215,6 @@ class SqlOperations(object):
             print(e)
             return False
 
-    
     def update_data_by_id(self,*args,**kwargs):
         try:
             updates = ""
@@ -224,13 +223,21 @@ class SqlOperations(object):
 
             sql_update_query = f"""Update {self.table} set {updates[:-1]} where id = {args[0]}"""
             self.cursor.execute(sql_update_query)
-            self.sqliteConnection.commit()
+            self.connection.commit()
             return True
         except Exception as e:
             print(e)
             return False
 
-
+    def get_unscrapped_data(self,*args,**kwargs):
+        try:
+            sqlite_select_query = f"""SELECT * from {self.table} where scrapped = 0 """
+            self.cursor.execute(sqlite_select_query)
+            records = self.cursor.fetchall()
+            return records
+        except Exception as e:
+            print(e)
+            return False
 
 
 
