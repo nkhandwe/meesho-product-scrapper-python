@@ -59,6 +59,8 @@ for i in range(no_of_pages_to_extract):
             'child_category':child_category
         })
 
+
+# start with adding all details of one product from database
 not_scrapped_data = sql.get_unscrapped_data()
 
 for i in not_scrapped_data:
@@ -79,6 +81,7 @@ for i in not_scrapped_data:
     #  downloading image and getting path
     images =(html_extract.get_image_url(details['images']))
     details['images'] =images
+    print(details)
 
     sql.update_data_by_id(i[0],details)
 

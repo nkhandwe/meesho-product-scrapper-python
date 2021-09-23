@@ -45,8 +45,8 @@ class Htmlextract(object):
             similar =data['similar']['products']
             details =data['details']['data']
             return{
-                'name':details['name'],
-                'description':details['description'],
+                'name':details['name'].replace("'",""),
+                'description':details['description'].replace("'",""),
                 'price':details['mrp_details']['mrp'],
                 'images':details['images'],
                 'sizes':json.dumps(details['variations']),
@@ -242,4 +242,3 @@ class SqlOperations(object):
         except Exception as e:
             print(e)
             return False
-
