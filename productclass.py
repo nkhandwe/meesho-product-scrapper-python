@@ -143,9 +143,53 @@ class CsvOperations(object):
 
 class SqlOperations(object):
 
-    def __init__(self,cursor,*args,**kwargs):
+    def __init__(self,cursor,table,*args,**kwargs):
         self.cursor = cursor
+        self.table = table
+
+    def create_table(self,*args,**kwargs):
+        sqlite_create_table_query = f'''CREATE TABLE { args[0]  } (
+                                id INTEGER  PRIMARY KEY AUTOINCREMENT,
+                                product_id TEXT UNIQUE,
+                                name TEXT NOT NULL,
+                                price INTEGER ,
+                                link TEXT ,
+                                images TEXT ,
+                                category TEXT ,
+                                sub_category TEXT ,
+                                child_category TEXT ,
+                                description TEXT ,
+                                sizes TEXT ,
+                                colours TEXT ,
+                                has_similar TEXT,
+                                similar TEXT,
+                                scrapped TEXT
+                                );'''
         
+        try :
+            self.cursor.execute(sqlite_create_table_query)
+            return True
+
+        except Exception as e:
+            print(e)
+            return False
+
+    def insert_data(self,*args, **kwargs):
+        if not self.table:
+            return "No table given"
+        columns = ()
+        values =()
+        for i in args[0]:
+            columns = columns + (i,)
+            values = values + (args[0][i],)
+
+        sqlite_insert_query = f"""INSERT INTO {self.table}
+                          {columns} 
+                           VALUES 
+                          {values}"""
+        print(sqlite_insert_query)
+        print(self.cursor.execute(sqlite_insert_query))
+        return True
 
 
 

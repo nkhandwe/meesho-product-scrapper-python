@@ -1,9 +1,3 @@
-# import producList
-# import requests ,time
-# import json 
-# import pandas as pd
-# from bs4 import BeautifulSoup
-
 from productclass import Product, Htmlextract ,CsvOperations,SqlOperations
 from utils import field_names
 import sqlite3
@@ -15,7 +9,9 @@ import sqlite3
 # csv_file_name = "files/products.csv"
 # no_of_pages_to_extract = 1 # default should be 1
 
+
 cursor = None
+table_name = 'products'
 
 # creating connection with database
 try:
@@ -27,16 +23,25 @@ try:
     cursor.execute(sqlite_select_Query)
     record = cursor.fetchall()
     print("SQLite Database Version is: ", record)
-    cursor.close()
 
 except sqlite3.Error as error:
     print("Error while connecting to sqlite", error)
 
 if cursor:
-  sql = SqlOperations(cursor)
+  sql = SqlOperations(cursor,table=table_name)
 
 
-print(sql)
+
+print(sql.create_table('products'))
+print(sql.insert_data({
+              'name':'name',
+                'description':'description',
+                'price':'mrp',
+                'images':'images',
+                'sizes':'variations',
+                'has_similar':'similar',
+                'scrapped':'True'
+            }))
 
 
 # csv = CsvOperations(file_name=csv_file_name,headers=field_names,field_names=field_names)
@@ -82,19 +87,23 @@ print(sql)
 # print(csv.get_not_scrapped())
 
 
-url = '/aagam-voguish-sarees/p/v0pji'
-product = Product(url)
-req = product.get_request()
-html_extract = Htmlextract(req)
+# url = '/aagam-voguish-sarees/p/v0pji'
+# product = Product(url)
+# req = product.get_request()
+# html_extract = Htmlextract(req)
 # json extracted
 # print(req)
 # print(html_extract.get_json())
 
 # details of one product
-details = html_extract.get_data_of_single_product()
-html_extract.get_image_url(details['images'])
+# details = html_extract.get_data_of_single_product()
+# html_extract.get_image_url(details['images'])
 
 # links = html_extract.get_on_page_product_links()
 
 
 
+
+
+
+cursor.close()
