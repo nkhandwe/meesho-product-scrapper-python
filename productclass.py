@@ -34,8 +34,8 @@ class Htmlextract(object):
         return links_array
     
     def get_json(self):
-        # with open(self.json_file,'w') as f:
-        #     f.write(self.soup.find('script',{"id":"__NEXT_DATA__","type":"application/json"}).text)
+        with open(self.json_file,'w') as f:
+            f.write(self.soup.find('script',{"id":"__NEXT_DATA__","type":"application/json"}).text)
         return self.soup.find('script',{"id":"__NEXT_DATA__","type":"application/json"}).text
     
     def get_data_of_single_product(self):
@@ -66,11 +66,6 @@ class Htmlextract(object):
             image_urls.append(image_name)
             urllib.request.urlretrieve(i, str(self.images_save+image_name))
         return image_urls
-
-
-
-    
-
 
 class CsvOperations(object):
 
@@ -116,7 +111,6 @@ class CsvOperations(object):
             return e
     
     def update_file_by_id(self,*args,**kwargs):
-        # print(dict(args[1]))
         if len(self.read_file())==0:
             raise "No data for updation"
         with open(self.file_name,'r') as f:
@@ -146,6 +140,13 @@ class CsvOperations(object):
             if args[0] == i['product_id']:
                 return True
         return False
+
+class SqlOperations(object):
+
+    def __init__(self,cursor,*args,**kwargs):
+        self.cursor = cursor
+        
+
 
 
 
