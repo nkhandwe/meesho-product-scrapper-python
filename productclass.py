@@ -73,7 +73,6 @@ class CsvOperations(object):
         self.file_name = file_name
         self.data = data
         self.headers = headers
-        print(args)
         self.field_names = field_names
 
     def read_file(self,*args,**kwargs):
