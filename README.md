@@ -19,6 +19,9 @@ $ python3 -m venv env #for python python3
 $ source env/bin/activate #for linux
 $ env\Scripts\activate #for windows
 ```
-
+4. Installing packages 
+```sh
+$ pip install -r requirements.txt
+```
 
 
