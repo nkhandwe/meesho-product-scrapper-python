@@ -4,4 +4,11 @@
 
 #### Steps to setup for local usage
 
+1. Clone into your local directory 
+
+```
+git clone https://github.com/krishnajhapate/meesho-product-scrapper-python.git
+cd meesho-product-scrapper-python
+```
+
 
