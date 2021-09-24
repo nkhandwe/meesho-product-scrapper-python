@@ -86,12 +86,13 @@ class CsvOperations(object):
                 return [re for re in read if re['scrapped']=='False']
 
     def write_file(self,*args,**kwargs):
+        print(args)
         try:
             with open(self.file_name,'w') as f:
                 f = DictWriter(f,delimiter=',',fieldnames=self.field_names)
                 if self.headers:
                     f.writeheader()
-                for i in args:
+                for i in args[0]:
                     f.writerow(i)
             return True
 
@@ -148,7 +149,8 @@ class SqlOperations(object):
         self.table = table
 
     def create_table(self,*args,**kwargs):
-        sqlite_create_table_query = f'''CREATE TABLE { self.table  } (
+        if args[0]=='product':
+            sqlite_create_table_query = f'''CREATE TABLE { self.table  } (
                                 id INTEGER  PRIMARY KEY AUTOINCREMENT,
                                 product_id TEXT UNIQUE,
                                 name TEXT ,
@@ -165,15 +167,16 @@ class SqlOperations(object):
                                 similar TEXT,
                                 scrapped TEXT
                                 );'''
-        # for cat table
-        # sqlite_create_table_query = f'''CREATE TABLE { self.table  } (
-        #                         id INTEGER  PRIMARY KEY AUTOINCREMENT,
-        #                         link TEXT ,
-        #                         category TEXT ,
-        #                         sub_category TEXT ,
-        #                         child_category TEXT ,
-        #                         scrapped TEXT
-        #                         );'''
+        if args[0]=='cat':
+            # for cat table
+            sqlite_create_table_query = f'''CREATE TABLE { self.table  } (
+                                id INTEGER  PRIMARY KEY AUTOINCREMENT,
+                                link TEXT ,
+                                category TEXT ,
+                                sub_category TEXT ,
+                                child_category TEXT ,
+                                scrapped TEXT
+                                );'''
         
         try :
             self.cursor.execute(sqlite_create_table_query)
@@ -244,6 +247,16 @@ class SqlOperations(object):
     def get_unscrapped_data(self,*args,**kwargs):
         try:
             sqlite_select_query = f"""SELECT {args[0] if args else '*'} from {self.table} where scrapped = 0 """
+            self.cursor.execute(sqlite_select_query)
+            records = self.cursor.fetchall()
+            return records
+        except Exception as e:
+            print(e)
+            return False
+
+    def get_data_with_image(self,*args,**kwargs):
+        try:
+            sqlite_select_query = f"""SELECT {args[0] if args else '*'} from {self.table} where images IS NOT NULL """
             self.cursor.execute(sqlite_select_query)
             records = self.cursor.fetchall()
             return records

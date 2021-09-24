@@ -33,8 +33,8 @@ if cursor:
     sql_cat = SqlOperations(cursor,connection=sqliteConnection,table=cat_table)
 
     # create database
-    # sql_cat.create_table()
-    # sql.create_table()
+    # sql_cat.create_table('cat')
+    # sql.create_table('product')
 
 
 
@@ -73,30 +73,30 @@ for page in scraping_pages:
 
 
 # # start with adding all details of one product from database
-# not_scrapped_data = sql.get_unscrapped_data('id , link')
+not_scrapped_data = sql.get_unscrapped_data('id , link')
 
 
-# for i in not_scrapped_data:
+for i in not_scrapped_data:
 
-#     # comming data (id,link)
+    # comming data (id,link)
 
-#     url = i[1]
-#     product = Product(url)
-#     req = product.get_request()
-#     html_extract = Htmlextract(req)
+    url = i[1]
+    product = Product(url)
+    req = product.get_request()
+    html_extract = Htmlextract(req)
 
-#     # json extracted
-#     html_extract.get_json()
+    # json extracted
+    html_extract.get_json()
 
-#     # details of one product
-#     details = html_extract.get_data_of_single_product()
+    # details of one product
+    details = html_extract.get_data_of_single_product()
 
-#     #  downloading image and getting path
-#     images =(html_extract.get_image_url(details['images']))
-#     details['images'] =images
-#     print(details)
+    #  downloading image and getting path
+    images =(html_extract.get_image_url(details['images']))
+    details['images'] =images
+    print(details)
 
-#     sql.update_data_by_id(i[0],details)
+    sql.update_data_by_id(i[0],details)
 
 
 
