@@ -41,26 +41,35 @@ if cursor:
 scraping_pages = sql_cat.get_unscrapped_data()
 print(scraping_pages)
 
-# getting links from given url
-# for i in range(no_of_pages_to_extract):
-#     # hitting request
-#     product = Product(url)
-#     req = product.get_request(i+1)
-#     html_extract = Htmlextract(req)
-#     links = html_extract.get_on_page_product_links()
-#     print(links)
+if not scraping_pages:
+    print("No links of pages for scrapping")
+    exit()
 
+for page in scraping_pages:
 
-#     # adding links to database
-#     for i in links:
-#         sql.insert_data({
-#             'link':i,
-#             'product_id':i.split('/')[-1],
-#             'scrapped':False,
-#             'category':category,
-#             'sub_category':sub_category,
-#             'child_category':child_category
-#         })
+    # page data: ('id' , 'link' , 'category' , 'sub_category' , 'child_category' ,'scrapped' )
+
+    # getting links from given url
+    for i in range(no_of_pages_to_extract):
+
+        # hitting request
+        product = Product(page[1])
+        req = product.get_request(i+1)
+        html_extract = Htmlextract(req)
+        links = html_extract.get_on_page_product_links()
+
+        # adding links to database scrapping from cat page
+        for link in links:
+            sql.insert_data({
+                'link':link,
+                'product_id':link.split('/')[-1],
+                'scrapped':False,
+                'category':page[2],
+                'sub_category':page[3],
+                'child_category':page[4]
+            })
+    
+    sql_cat.update_data_by_id(page[0],{'scrapped':0})
 
 
 # # start with adding all details of one product from database
