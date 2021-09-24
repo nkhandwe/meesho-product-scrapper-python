@@ -12,6 +12,7 @@ no_of_pages_to_extract = 1 # default should be 1
 
 cursor = None
 table_name = 'products'
+cat_table = 'cat_table'
 
 # creating connection with database
 try:
@@ -29,61 +30,64 @@ except sqlite3.Error as error:
 
 if cursor:
     sql = SqlOperations(cursor,connection=sqliteConnection,table=table_name)
+    sql_cat = SqlOperations(cursor,connection=sqliteConnection,table=cat_table)
 
     # create database
+    # sql_cat.create_table()
     # sql.create_table()
 
 
 
+scraping_pages = sql_cat.get_unscrapped_data()
+print(scraping_pages)
 
 # getting links from given url
-for i in range(no_of_pages_to_extract):
-    # hitting request
-    product = Product(url)
-    req = product.get_request(i+1)
-    html_extract = Htmlextract(req)
-    links = html_extract.get_on_page_product_links()
-    print(links)
-
-    # uncomment this new line when start with a new file
-    # csv.write_file()
-
-    # adding links to database
-    for i in links:
-        sql.insert_data({
-            'link':i,
-            'product_id':i.split('/')[-1],
-            'scrapped':False,
-            'category':category,
-            'sub_category':sub_category,
-            'child_category':child_category
-        })
+# for i in range(no_of_pages_to_extract):
+#     # hitting request
+#     product = Product(url)
+#     req = product.get_request(i+1)
+#     html_extract = Htmlextract(req)
+#     links = html_extract.get_on_page_product_links()
+#     print(links)
 
 
-# start with adding all details of one product from database
-not_scrapped_data = sql.get_unscrapped_data()
+#     # adding links to database
+#     for i in links:
+#         sql.insert_data({
+#             'link':i,
+#             'product_id':i.split('/')[-1],
+#             'scrapped':False,
+#             'category':category,
+#             'sub_category':sub_category,
+#             'child_category':child_category
+#         })
 
-for i in not_scrapped_data:
 
-    # comming data (id,link)
+# # start with adding all details of one product from database
+# not_scrapped_data = sql.get_unscrapped_data('id , link')
 
-    url = i[1]
-    product = Product(url)
-    req = product.get_request()
-    html_extract = Htmlextract(req)
 
-    # json extracted
-    html_extract.get_json()
+# for i in not_scrapped_data:
 
-    # details of one product
-    details = html_extract.get_data_of_single_product()
+#     # comming data (id,link)
 
-    #  downloading image and getting path
-    images =(html_extract.get_image_url(details['images']))
-    details['images'] =images
-    print(details)
+#     url = i[1]
+#     product = Product(url)
+#     req = product.get_request()
+#     html_extract = Htmlextract(req)
 
-    sql.update_data_by_id(i[0],details)
+#     # json extracted
+#     html_extract.get_json()
+
+#     # details of one product
+#     details = html_extract.get_data_of_single_product()
+
+#     #  downloading image and getting path
+#     images =(html_extract.get_image_url(details['images']))
+#     details['images'] =images
+#     print(details)
+
+#     sql.update_data_by_id(i[0],details)
 
 
 
