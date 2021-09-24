@@ -33,8 +33,8 @@ if cursor:
     sql_cat = SqlOperations(cursor,connection=sqliteConnection,table=cat_table)
 
     # create database
-    # sql_cat.create_table('cat')
-    # sql.create_table('product')
+    sql_cat.create_table('cat')
+    sql.create_table('product')
 
 
 
@@ -97,7 +97,6 @@ for i in not_scrapped_data:
     print(details)
 
     sql.update_data_by_id(i[0],details)
-
 
 
 cursor.close()
