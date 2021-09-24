@@ -1,6 +1,6 @@
 ## Meesho product scrapper
 
-**Note** Download [sqlite browser](https://sqlitebrowser.org/dl/)
+**Note** Download [sqlite browser](https://sqlitebrowser.org/dl/) for looking to database
 
 #### Steps to setup for local usage
 
