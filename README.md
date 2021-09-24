@@ -24,4 +24,9 @@ $ env\Scripts\activate #for windows
 $ pip install -r requirements.txt
 ```
 
+#### run in local 
+```sh
+$ python main.py
+$ python3 main.py 
+```
 
