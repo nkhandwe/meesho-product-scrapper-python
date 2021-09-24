@@ -31,4 +31,4 @@ field_names=[
     'Height',
 ]
 
-csv = CsvOperations(file_name=file_name,data=Product name
+csv = CsvOperations(file_name=file_name,headers=field_names,field_names=field_names)
