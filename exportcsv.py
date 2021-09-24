@@ -1,4 +1,4 @@
-from productclass import CsvOperations
+from productclass import CsvOperations, SqlOperations
 
 file_name="products.csv"
 field_names=[
@@ -48,5 +48,5 @@ except sqlite3.Error as error:
 
 if cursor:
     sql = SqlOperations(cursor,connection=sqliteConnection,table=table_name)
-    
+
 csv = CsvOperations(file_name=file_name,headers=field_names,field_names=field_names)
