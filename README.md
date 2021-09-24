@@ -16,17 +16,17 @@ $ python3 -m venv env #for python python3
 ```
 3. Activating virtual enviroment 
 ```sh
-$ source env/bin/activate #for linux
-$ env\Scripts\activate #for windows
+(env) $ source env/bin/activate #for linux
+(env) $ env\Scripts\activate #for windows
 ```
 4. Installing packages 
 ```sh
-$ pip install -r requirements.txt
+(env) $ pip install -r requirements.txt
 ```
 
 #### run in local 
 ```sh
-$ python main.py
-$ python3 main.py 
+(env) $ python main.py
+(env) $ python3 main.py 
 ```
 
