@@ -3,7 +3,7 @@ from utils import field_names
 import sqlite3
 
 csv_file_name = "files/products.csv"
-no_of_pages_to_extract = 1 # default should be 1
+no_of_pages_to_extract = 4 # default should be 1
 
 
 cursor = None

@@ -35,6 +35,7 @@ class Htmlextract(object):
     
     def get_json(self):
         with open(self.json_file,'w') as f:
+            # print(self.soup.find('script',{"id":"__NEXT_DATA__","type":"application/json"}))
             f.write(self.soup.find('script',{"id":"__NEXT_DATA__","type":"application/json"}).text)
         return self.soup.find('script',{"id":"__NEXT_DATA__","type":"application/json"}).text
     
