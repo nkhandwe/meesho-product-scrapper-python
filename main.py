@@ -2,10 +2,6 @@ from productclass import Product, Htmlextract ,CsvOperations,SqlOperations
 from utils import field_names
 import sqlite3
 
-url ="/tshirts-men/pl/t3brl"
-category = "Men"
-sub_category="Top Wear"
-child_category = "Tshirts"
 csv_file_name = "files/products.csv"
 no_of_pages_to_extract = 1 # default should be 1
 
